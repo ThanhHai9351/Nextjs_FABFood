@@ -107,7 +107,7 @@ const RegisterForm = () => {
             <FormItem>
               <FormLabel>Confirm password</FormLabel>
               <FormControl>
-                <Input placeholder="Enter confirm password" {...field} />
+                <Input type="password" placeholder="Enter confirm password" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
