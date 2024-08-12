@@ -1,9 +1,10 @@
+import RegisterForm from '@/app/(auth)/register/register-form';
 import React from 'react';
 
 const RegisterPage = () => {
     return (
         <div>
-            Register
+            <RegisterForm />
         </div>
     );
 }
