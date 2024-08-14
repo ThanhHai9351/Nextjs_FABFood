@@ -49,7 +49,6 @@ const RegisterForm = () => {
                     'Content-Type': 'application/json'
                 }
             });
-            console.log(response.data);
         } catch (error) {
             console.error('Error registering:', error);
         }

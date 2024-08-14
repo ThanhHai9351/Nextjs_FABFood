@@ -16,9 +16,12 @@ import { LoginBody, LoginBodyType } from "@/schemaValidations/auth.schema"
 import axios from "axios"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
+import { headers } from "next/headers"
+import envConfig from "../../../../config"
+import { useAppContext } from "@/app/AppProvider"
  
 const LoginForm = () => {
-
+    const {setSessionToken} = useAppContext();
     const form = useForm<LoginBodyType>({
         resolver: zodResolver(LoginBody),
         defaultValues: {
@@ -29,18 +32,27 @@ const LoginForm = () => {
      
       async function onSubmit(values: LoginBodyType) {
         try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/auth/login`, values, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(()=>{
-              toast.success("Đăng nhập thành công!");
-            })
+            const response = await axios.post(`${envConfig.NEXT_PUBLIC_API_ENDPOINT}/auth/login`, values, {
+                headers: { 'Content-Type': 'application/json' }
+            });
+    
+            const token = response.data.data?.token;
+    
+            if (token) {
+                await axios.post('/api/auth', { data: response.data }, {
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                setSessionToken(token);
+                toast.success("Đăng nhập thành công");
+            } else {
+                toast.error("Token không có trong phản hồi.");
+            }
         } catch (error) {
             console.error('Error registering:', error);
             toast.error("Sai tài khoản hoặc mật khẩu!");
         }
-      }
+    }
+
     return (
         <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 m-32 border-2 border-gray-300 p-5">

@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider"
 import "./globals.css";
 import Header from "@/components/ui/header";
+import AppProvider from "@/app/AppProvider";
+import { cookies } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,6 +18,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = cookies();
+  const sessionToken = cookieStore.get('sessionToken');
   return (
     <>
       <html lang="en" suppressHydrationWarning>
@@ -28,7 +32,11 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Header/>
+            <AppProvider initialSessionToken={
+              sessionToken?.value
+            } >
             {children}
+            </AppProvider>
           </ThemeProvider>
         </body>
       </html>
