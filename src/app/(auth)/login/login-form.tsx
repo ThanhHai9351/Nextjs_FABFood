@@ -1,5 +1,4 @@
 "use client"
- 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
@@ -13,15 +12,16 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { LoginBody, LoginBodyType } from "@/schemaValidations/auth.schema"
-import axios from "axios"
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
-import { headers } from "next/headers"
-import envConfig from "../../../../config"
 import { useAppContext } from "@/app/AppProvider"
+import { useRouter } from 'next/navigation'
+import Http from "@/lib/http"
  
 const LoginForm = () => {
     const {setSessionToken} = useAppContext();
+    const http = new Http();
+    const router = useRouter()
     const form = useForm<LoginBodyType>({
         resolver: zodResolver(LoginBody),
         defaultValues: {
@@ -32,6 +32,16 @@ const LoginForm = () => {
      
       async function onSubmit(values: LoginBodyType) {
         try {
+            const success = await http.login(values);
+            if (success) {
+                setTimeout(()=>{
+                    router.push('/me')
+                },2000)
+            }
+        } catch (error) {
+            console.error('Unexpected error:', error);
+        }
+       /*  try {
             const response = await axios.post(`${envConfig.NEXT_PUBLIC_API_ENDPOINT}/auth/login`, values, {
                 headers: { 'Content-Type': 'application/json' }
             });
@@ -50,7 +60,7 @@ const LoginForm = () => {
         } catch (error) {
             console.error('Error registering:', error);
             toast.error("Sai tài khoản hoặc mật khẩu!");
-        }
+        } */
     }
 
     return (

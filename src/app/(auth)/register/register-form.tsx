@@ -3,10 +3,10 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
+import { useRouter } from 'next/navigation'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -14,24 +14,14 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { RegisterBody, RegisterBodyType } from "@/schemaValidations/auth.schema"
-import axios from "axios"
- 
-// const formSchema = z.object({
-//   name: z.string().min(2, {
-//     message: "Username must be at least 2 characters.",
-//   }),
-//   email: z.string().min(2, {
-//     message: "Username must be at least 2 characters.",
-//   }),
-//   password: z.string().min(2, {
-//     message: "Username must be at least 2 characters.",
-//   }),
-//   confirmPassword: z.string().min(2, {
-//     message: "Username must be at least 2 characters.",
-//   }),
-// })
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
+import Http from "@/lib/http"
+
 
 const RegisterForm = () => {
+    const http = new Http();
+      const router = useRouter();
     const form = useForm<RegisterBodyType>({
         resolver: zodResolver(RegisterBody),
         defaultValues: {
@@ -44,15 +34,16 @@ const RegisterForm = () => {
      
       async function onSubmit(values: RegisterBodyType) {
         try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/auth/register`, values, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-        } catch (error) {
-            console.error('Error registering:', error);
-        }
+          const success = await http.register(values);
+          if (success) {
+              setTimeout(()=>{
+                  router.push('/login')
+              },2000)
+          }
+      } catch (error) {
+          console.error('Unexpected error:', error);
       }
+    }
 
     return (
         <Form {...form}>
@@ -114,6 +105,7 @@ const RegisterForm = () => {
         />
         <Button type="submit">Register</Button>
       </form>
+      <ToastContainer />
     </Form>
     );
 }
