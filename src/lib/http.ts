@@ -1,11 +1,11 @@
 import axios from "axios";
 import envConfig from "../../config";
-import { RegisterBodyType } from "@/schemaValidations/auth.schema";
+import { RegisterBodyType,LoginBodyType } from "@/schemaValidations/auth.schema";
 import { toast } from "react-toastify";
 import { MessageResType } from "@/schemaValidations/common.schema";
 
 class Http{
-    login = async(data:RegisterBodyType):Promise<boolean> =>{
+    login = async(data:LoginBodyType):Promise<string> =>{
         try {
             const response = await axios.post(`${envConfig.NEXT_PUBLIC_API_ENDPOINT}/auth/login`, data, {
                 headers: { 'Content-Type': 'application/json' }
@@ -18,15 +18,15 @@ class Http{
                     headers: { 'Content-Type': 'application/json' }
                 });
                 toast.success("Đăng nhập thành công");
-                return true;
+                return token;
             } else {
                 toast.error("Token không có trong phản hồi.");
-                return false;
+                return "";
             }
         } catch (error) {
             toast.error("Đăng nhập thất bại. Vui lòng thử lại.");
             console.error("Login error:", error);
-            return false;
+            return "";
         }
     }
 
@@ -54,6 +54,8 @@ class Http{
             headers: {
                 Authorization: `Bearer ${sessionToken}`
             }
+        }).catch(()=>{
+            console.log("aloo");
         })
     }
 
@@ -62,7 +64,9 @@ class Http{
             baseURL: ""
         })
     }
+
 }
+
 
 export default Http;
 

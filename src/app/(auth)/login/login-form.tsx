@@ -34,6 +34,7 @@ const LoginForm = () => {
         try {
             const success = await http.login(values);
             if (success) {
+                setSessionToken(success);
                 setTimeout(()=>{
                     router.push('/me')
                 },2000)

@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     }
 
     try {
-        const result = await http.logoutFromNextServerToServer(sessionToken.value)
+        const result = await http.logoutFromNextServerToServer(sessionToken?.value)
         return new Response(
             JSON.stringify(result),
             {

@@ -10,7 +10,7 @@ const ButtonLogout = () => {
     const handleLogout = async() =>{
         try{
             await http.logoutFromNextClientToServer();
-            router.push('/login')
+            router.push("/");
         }catch(error)
         {
             console.log(error);
