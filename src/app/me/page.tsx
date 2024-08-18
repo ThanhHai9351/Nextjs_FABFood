@@ -3,6 +3,8 @@ import { cookies } from 'next/headers';
 import axios from 'axios';
 import envConfig from '../../../config';
 import { redirect } from 'next/navigation';
+import ProfileForm from '@/app/me/profile-form';
+import ButtonLogout from '@/components/ui/button-logout';
 
 const PageMe = async () => {
     const cookieStore = cookies();
@@ -19,7 +21,11 @@ const PageMe = async () => {
 
         return (
             <div>
-                <h1>Xin chao {response.data.data.name}</h1>
+                <ButtonLogout /> 
+                <h1>Xin chao</h1>
+                <div className='m-4'>
+                <ProfileForm profile={response.data.data} />
+                </div>
             </div>
         );
     } catch (error) {

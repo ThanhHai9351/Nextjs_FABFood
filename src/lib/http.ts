@@ -3,6 +3,7 @@ import envConfig from "../../config";
 import { RegisterBodyType,LoginBodyType } from "@/schemaValidations/auth.schema";
 import { toast } from "react-toastify";
 import { MessageResType } from "@/schemaValidations/common.schema";
+import { UpdateMeBodyType } from "@/schemaValidations/account.schema";
 
 class Http{
     login = async(data:LoginBodyType):Promise<string> =>{
@@ -63,6 +64,23 @@ class Http{
         await axios.post<MessageResType>(`/api/auth/logout`, null,{
             baseURL: ""
         })
+    }
+
+    updateAccount = async(data:UpdateMeBodyType,sessionToken : string):Promise<boolean> =>{
+        console.log(sessionToken);
+        try{
+            const res = await axios.put(`${envConfig.NEXT_PUBLIC_API_ENDPOINT}/account/me`,data,{
+                headers:{
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${sessionToken}`
+                }
+            })
+            console.log(res.data);
+            return true;
+        }catch(err){
+            console.log(err);
+            return false;
+        }
     }
 
 }
