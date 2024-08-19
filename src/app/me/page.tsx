@@ -23,7 +23,7 @@ const PageMe = async () => {
             <div>
                 <ButtonLogout /> 
                 <h1>Xin chao</h1>
-                <div className='m-4'>
+                <div>
                 <ProfileForm profile={response.data.data} />
                 </div>
             </div>

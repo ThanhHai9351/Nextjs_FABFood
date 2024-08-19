@@ -4,6 +4,7 @@ import { RegisterBodyType,LoginBodyType } from "@/schemaValidations/auth.schema"
 import { toast } from "react-toastify";
 import { MessageResType } from "@/schemaValidations/common.schema";
 import { UpdateMeBodyType } from "@/schemaValidations/account.schema";
+import { CreateProductBodyType } from "@/schemaValidations/product.schema";
 
 class Http{
     login = async(data:LoginBodyType):Promise<string> =>{
@@ -80,6 +81,36 @@ class Http{
         }catch(err){
             console.log(err);
             return false;
+        }
+    }
+
+    createProduct = async(data:CreateProductBodyType, sessionToken : string):Promise<boolean> =>{
+        try {
+            const res = await axios.post(`${envConfig.NEXT_PUBLIC_API_ENDPOINT}/products`,data,{
+                headers:{
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${sessionToken}`
+                }
+            })
+            return true;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
+    uploadImage = async(data: FormData,sessionToken : string)=>{
+        try{
+            const res = await axios.post(`${envConfig.NEXT_PUBLIC_API_ENDPOINT}/media/upload`,data,{
+                headers:{
+                    Authorization: `Bearer ${sessionToken}`
+                }
+            })
+            return res.data.data;
+        }catch(error)
+        {
+            console.log(error);
+            return "";
         }
     }
 
