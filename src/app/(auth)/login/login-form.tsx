@@ -42,26 +42,6 @@ const LoginForm = () => {
         } catch (error) {
             console.error('Unexpected error:', error);
         }
-       /*  try {
-            const response = await axios.post(`${envConfig.NEXT_PUBLIC_API_ENDPOINT}/auth/login`, values, {
-                headers: { 'Content-Type': 'application/json' }
-            });
-    
-            const token = response.data.data?.token;
-    
-            if (token) {
-                await axios.post('/api/auth', { data: response.data }, {
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                setSessionToken(token);
-                toast.success("Đăng nhập thành công");
-            } else {
-                toast.error("Token không có trong phản hồi.");
-            }
-        } catch (error) {
-            console.error('Error registering:', error);
-            toast.error("Sai tài khoản hoặc mật khẩu!");
-        } */
     }
 
     return (

@@ -114,6 +114,31 @@ class Http{
         }
     }
 
+    getAllProducts = async() =>{
+        try {
+            const res = await axios.get(`${envConfig.NEXT_PUBLIC_API_ENDPOINT}/products`)
+            return res.data.data;
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
+
+    deleteProduct = async(id: number, sessionToken: string):Promise<boolean> =>{
+        try {
+            const response = await axios.delete(`${envConfig.NEXT_PUBLIC_API_ENDPOINT}/products/${id}`,{
+                headers:{
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${sessionToken}`,
+                }
+            })
+            return true;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
 }
 
 
