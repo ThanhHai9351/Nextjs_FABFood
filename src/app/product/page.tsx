@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
 import React, { useEffect, useState } from 'react';
-import { table } from 'console';
+import Link from 'next/link';
 
 const ProductPage = () => {
     const {sessionToken} = useAppContext();
@@ -57,7 +57,7 @@ const ProductPage = () => {
                                     className='m-auto' 
                                 />
                             </div>
-                            <h2>Name: {product.name}</h2>
+                            <Link href={`/product/detail?id=${product.id}`}>Name: {product.name}</Link>
                             <p>Description: {product.description}</p>
                             <span>Price: {product.price}</span>
                             <div className='m-2'>

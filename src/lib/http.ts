@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { MessageResType } from "@/schemaValidations/common.schema";
 import { UpdateMeBodyType } from "@/schemaValidations/account.schema";
 import { CreateProductBodyType } from "@/schemaValidations/product.schema";
+import { env } from "process";
 
 class Http{
     login = async(data:LoginBodyType):Promise<string> =>{
@@ -139,6 +140,15 @@ class Http{
         }
     }
 
+    getProduct = async(id: number) =>{
+        try {
+            const response = await axios.get(`${envConfig.NEXT_PUBLIC_API_ENDPOINT}/products/${id}`)
+            return response.data.data
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
 }
 
 
