@@ -57,11 +57,11 @@ const ProductPage = () => {
                                     className='m-auto' 
                                 />
                             </div>
-                            <Link href={`/product/detail?id=${product.id}`}>Name: {product.name}</Link>
+                            <Link className='text-yellow-300' href={`/product/detail?id=${product.id}`}>Name: {product.name}</Link>
                             <p>Description: {product.description}</p>
                             <span>Price: {product.price}</span>
                             <div className='m-2'>
-                                <Button className='mr-3' variant={'outline'}>Edit</Button>
+                                <Button onClick={()=>router.push(`/product/edit?id=${product.id}`)} className='mr-3' variant={'outline'}>Edit</Button>
                                 <Button onClick={()=>handleDeleteProduct(product.id)} variant={'destructive'}>Delete</Button>
                             </div>
                         </div>
